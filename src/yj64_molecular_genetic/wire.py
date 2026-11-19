@@ -14,13 +14,11 @@ SCHEMA_VERSION = "1.0"
 def _candidate_ref(value: CandidateRef) -> dict[str, Any]:
     return {"schema_id": CANDIDATE_SCHEMA, "schema_version": SCHEMA_VERSION,
             "candidate_id": value.candidate_id, "version": value.version,
-            "candidate_schema_version": value.schema_version, "origin_module": value.origin_module,
-            "intended_scope": "", "input_refs": [], "provenance_refs": []}
+            "candidate_schema_version": value.schema_version, "origin_module": value.origin_module}
 
 
 def to_wire_candidate(value: CandidateRef) -> dict[str, Any]:
-    return {"schema_id": CANDIDATE_SCHEMA, "schema_version": SCHEMA_VERSION,
-            **_candidate_ref(value)}
+    return _candidate_ref(value)
 
 
 def to_wire_evidence(value: EvidenceRef) -> dict[str, Any]:
@@ -43,8 +41,9 @@ def to_wire_review(value: DisciplineReview) -> dict[str, Any]:
 
 
 def to_wire_proposal(value: EnhancementProposal, *, decision_version: int | None = None) -> dict[str, Any]:
-    if not value.evidence:
-        raise ValueError("enhancement proposals require evidence references")
+    if value.status is not ProposalStatus.PROPOSED:
+        if decision_version is None or decision_version < 1:
+            raise ValueError("decision_version >= 1 is required for a parent-decided proposal")
     result = {
         "schema_id": PROPOSAL_SCHEMA, "schema_version": SCHEMA_VERSION,
         "proposal_id": value.proposal_id, "candidate": _candidate_ref(value.candidate),
@@ -57,8 +56,6 @@ def to_wire_proposal(value: EnhancementProposal, *, decision_version: int | None
         "validation_plan": list(value.validation_plan), "status": value.status.value,
     }
     if value.status is not ProposalStatus.PROPOSED:
-        if decision_version is None or decision_version < 1:
-            raise ValueError("decision_version >= 1 is required for a parent-decided proposal")
         result["decision_rationale"] = value.decision_rationale
         result["decision_version"] = decision_version
     return result
