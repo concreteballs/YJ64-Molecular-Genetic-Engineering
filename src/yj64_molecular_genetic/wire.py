@@ -12,13 +12,15 @@ SCHEMA_VERSION = "1.0"
 
 
 def _candidate_ref(value: CandidateRef) -> dict[str, Any]:
-    return {"candidate_id": value.candidate_id, "version": value.version,
-            "schema_version": value.schema_version, "origin_module": value.origin_module}
+    return {"schema_id": CANDIDATE_SCHEMA, "schema_version": SCHEMA_VERSION,
+            "candidate_id": value.candidate_id, "version": value.version,
+            "candidate_schema_version": value.schema_version, "origin_module": value.origin_module,
+            "intended_scope": "", "input_refs": [], "provenance_refs": []}
 
 
 def to_wire_candidate(value: CandidateRef) -> dict[str, Any]:
     return {"schema_id": CANDIDATE_SCHEMA, "schema_version": SCHEMA_VERSION,
-            **_candidate_ref(value), "intended_scope": [], "input_refs": [], "provenance_refs": []}
+            **_candidate_ref(value)}
 
 
 def to_wire_evidence(value: EvidenceRef) -> dict[str, Any]:
