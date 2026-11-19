@@ -1,0 +1,40 @@
+{
+  "extension_id": "yj64.molecular-genetic-engineering",
+  "name": "YJ64 Molecular & Genetic Engineering",
+  "version": "0.1.0",
+  "kind": "discipline_pack",
+  "api_version": "1.0",
+  "capabilities": [
+    {
+      "operation": "review_candidate",
+      "input_schema": "yj64.cross_module.candidate.v1",
+      "output_schema": "yj64.cross_module.review.v1",
+      "units": [],
+      "coordinate_frames": [],
+      "time_scales": []
+    },
+    {
+      "operation": "contribute_enhancements",
+      "input_schema": "yj64.cross_module.candidate.v1",
+      "output_schema": "yj64.cross_module.contribution.v1",
+      "units": [],
+      "coordinate_frames": [],
+      "time_scales": []
+    }
+  ],
+  "dependencies": [],
+  "licence": "UNSPECIFIED",
+  "permissions": [],
+  "safety_class": "computational_molecular_genetic_research_biosafety_review_required",
+  "network_required": false,
+  "offline_supported": true,
+  "resource_requirements": {
+    "execution": "external_adapter_required",
+    "wet_lab_execution": false
+  },
+  "provenance": {
+    "repository": "concreteballs/YJ64-Molecular-Genetic-Engineering",
+    "contract_schema_namespace": "yj64.cross_module",
+    "contract_major": 1
+  }
+}
